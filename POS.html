@@ -1,0 +1,3128 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600&display=swap"
+    rel="stylesheet">
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0
+    }
+
+    :root {
+        --bg: #0f1117;
+        --surface: #1a1d27;
+        --card: #22263a;
+        --border: #2e3250;
+        --accent: #00e5a0;
+        --accent2: #4f8ef7;
+        --warn: #f59e0b;
+        --danger: #ef4444;
+        --text: #f0f2ff;
+        --muted: #8890b5;
+        --green: #10b981;
+        --font: 'DM Mono', monospace;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font);
+        min-height: 600px
+    }
+
+    .app {
+        display: flex;
+        flex-direction: column;
+        min-height: 600px
+    }
+
+    .topbar {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+    }
+
+    .logo {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: .5px
+    }
+
+    .logo span {
+        color: var(--accent)
+    }
+
+    .tabs {
+        display: flex;
+        gap: 4px;
+        padding: 0 16px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border)
+    }
+
+    .tab {
+        padding: 10px 16px;
+        font-size: 12px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        color: var(--muted);
+        transition: all .2s;
+        font-family: 'Space Grotesk', sans-serif
+    }
+
+    .tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent)
+    }
+
+    .tab:hover:not(.active) {
+        color: var(--text)
+    }
+
+    .body {
+        padding: 16px;
+        flex: 1
+    }
+
+    .panel {
+        display: none
+    }
+
+    .panel.active {
+        display: block
+    }
+
+    .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px
+    }
+
+    .grid4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px
+    }
+
+    .kpi {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px
+    }
+
+    .kpi-label {
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .8px
+    }
+
+    .kpi-val {
+        font-size: 22px;
+        font-weight: 500;
+        font-family: 'Space Grotesk', sans-serif
+    }
+
+    .kv-accent {
+        color: var(--accent)
+    }
+
+    .kv-blue {
+        color: var(--accent2)
+    }
+
+    .kv-warn {
+        color: var(--warn)
+    }
+
+    .kv-danger {
+        color: var(--danger)
+    }
+
+    .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+        margin-bottom: 12px
+    }
+
+    .card-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .5px
+    }
+
+    input,
+    select {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        padding: 8px 10px;
+        font-size: 12px;
+        font-family: var(--font);
+        width: 100%;
+        outline: none
+    }
+
+    input:focus,
+    select:focus {
+        border-color: var(--accent)
+    }
+
+    .btn {
+        border: none;
+        border-radius: 6px;
+        padding: 9px 18px;
+        font-size: 12px;
+        cursor: pointer;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500;
+        transition: all .15s
+    }
+
+    .btn-primary {
+        background: var(--accent);
+        color: #0a0f0a
+    }
+
+    .btn-primary:hover {
+        background: #00c988
+    }
+
+    .btn-secondary {
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid var(--border)
+    }
+
+    .btn-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent)
+    }
+
+    .btn-danger {
+        background: #3a1515;
+        color: var(--danger);
+        border: 1px solid #5a2020
+    }
+
+    .btn-warn {
+        background: #3a2e0a;
+        color: var(--warn);
+        border: 1px solid #5a4a10
+    }
+
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 11px
+    }
+
+    .row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: flex-end
+    }
+
+    .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px
+    }
+
+    label {
+        font-size: 11px;
+        color: var(--muted)
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px
+    }
+
+    th {
+        text-align: left;
+        padding: 8px 10px;
+        color: var(--muted);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        border-bottom: 1px solid var(--border);
+        font-weight: 400
+    }
+
+    td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border)
+    }
+
+    tr:last-child td {
+        border-bottom: none
+    }
+
+    tr:hover td {
+        background: rgba(255, 255, 255, .02)
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 500
+    }
+
+    .badge-green {
+        background: #0a2e1a;
+        color: var(--green)
+    }
+
+    .badge-red {
+        background: #2e0a0a;
+        color: var(--danger)
+    }
+
+    .badge-amber {
+        background: #2e1f0a;
+        color: var(--warn)
+    }
+
+    .badge-blue {
+        background: #0a1a2e;
+        color: var(--accent2)
+    }
+
+    .pos-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 12px
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px
+    }
+
+    .cart-total {
+        padding: 12px;
+        border-top: 1px solid var(--border);
+        margin-top: 4px
+    }
+
+    .cart-total .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 13px
+    }
+
+    .grand-total {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--accent)
+    }
+
+    .item-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all .15s
+    }
+
+    .item-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px)
+    }
+
+    .item-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 8px;
+        max-height: 380px;
+        overflow-y: auto
+    }
+
+    .item-name {
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 4px
+    }
+
+    .item-price {
+        font-size: 14px;
+        color: var(--accent);
+        font-family: 'Space Grotesk', sans-serif
+    }
+
+    .item-cat {
+        font-size: 10px;
+        color: var(--muted)
+    }
+
+    .notif {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        z-index: 100;
+        animation: slideIn .3s ease;
+        font-family: 'Space Grotesk', sans-serif
+    }
+
+    .notif-success {
+        background: #0a2e1a;
+        border: 1px solid var(--green);
+        color: var(--green)
+    }
+
+    .notif-error {
+        background: #2e0a0a;
+        border: 1px solid var(--danger);
+        color: var(--danger)
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px)
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0)
+        }
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: .3;
+            transform: scale(.8)
+        }
+
+        50% {
+            opacity: 1;
+            transform: scale(1.2)
+        }
+    }
+
+    .sync-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        display: inline-block;
+        margin-left: 6px;
+        animation: pulse 2s ease-in-out infinite
+    }
+
+    .search-bar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        padding: 8px 12px;
+        font-size: 12px;
+        font-family: var(--font);
+        width: 100%;
+        outline: none;
+        margin-bottom: 10px
+    }
+
+    .search-bar:focus {
+        border-color: var(--accent)
+    }
+
+    .loan-status-active {
+        color: var(--accent2)
+    }
+
+    .loan-status-overdue {
+        color: var(--danger)
+    }
+
+    .loan-status-paid {
+        color: var(--green)
+    }
+
+    .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px
+    }
+
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--surface)
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 4px
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--muted);
+        font-size: 12px
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .7);
+        z-index: 200;
+        align-items: center;
+        justify-content: center
+    }
+
+    .modal-overlay.open {
+        display: flex
+    }
+
+    .modal {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        width: 520px;
+        max-width: 95vw;
+        max-height: 85vh;
+        overflow-y: auto;
+        position: relative
+    }
+
+    .modal-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .modal-close {
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1;
+        padding: 2px 6px;
+        border-radius: 4px
+    }
+
+    .modal-close:hover {
+        color: var(--text);
+        background: var(--border)
+    }
+
+    .pay-modal {
+        width: 380px
+    }
+
+    .pay-amount-display {
+        text-align: center;
+        padding: 16px;
+        background: var(--surface);
+        border-radius: 8px;
+        margin-bottom: 14px
+    }
+
+    .pay-balance {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--warn)
+    }
+
+    .pay-label {
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px
+    }
+
+    .history-item {
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin-bottom: 8px;
+        font-size: 12px
+    }
+
+    .history-item-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .progress-bar {
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 6px
+    }
+
+    .progress-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: var(--accent);
+        transition: width .4s ease
+    }
+
+    .customer-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: border-color .2s
+    }
+
+    .customer-card:hover {
+        border-color: var(--accent2)
+    }
+
+    .customer-card.expanded {
+        border-color: var(--accent)
+    }
+
+    .trend-up {
+        color: var(--green)
+    }
+
+    .trend-down {
+        color: var(--danger)
+    }
+
+    .trend-neutral {
+        color: var(--muted)
+    }
+
+    .btn-blue {
+        background: #0d2a4a;
+        color: var(--accent2);
+        border: 1px solid #1a4a7a
+    }
+
+    .btn-blue:hover {
+        border-color: var(--accent2)
+    }
+
+    .pay-quick-btns {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 10px
+    }
+
+    .pay-quick {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: 11px;
+        cursor: pointer;
+        font-family: 'Space Grotesk', sans-serif;
+        transition: all .15s
+    }
+
+    .pay-quick:hover {
+        border-color: var(--accent);
+        color: var(--accent)
+    }
+
+    .loan-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 14px
+    }
+
+    .loan-tab {
+        padding: 7px 14px;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 6px;
+        color: var(--muted);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        font-family: 'Space Grotesk', sans-serif;
+        transition: all .2s
+    }
+
+    .loan-tab.active {
+        background: var(--accent);
+        color: #0a0f0a;
+        border-color: var(--accent)
+    }
+
+    .sales-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 14px
+    }
+
+    .sales-tab {
+        padding: 7px 16px;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 6px;
+        color: var(--muted);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        font-family: 'Space Grotesk', sans-serif;
+        transition: all .2s
+    }
+
+    .sales-tab.active {
+        background: var(--accent2);
+        color: #fff;
+        border-color: var(--accent2)
+    }
+
+    .sales-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 14px
+    }
+
+    .today-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #0a2e1a;
+        border: 1px solid var(--green);
+        color: var(--green);
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500
+    }
+
+    .dash-today-card {
+        background: linear-gradient(135deg, #0a2e1a, #0d3520);
+        border: 1px solid var(--green);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px
+    }
+
+    .dash-today-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 10px
+    }
+
+    /* Utility Classes Extracted from Inline Styles */
+    .util-style-1 {
+        position: relative
+    }
+
+    .util-style-2 {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        z-index: 9999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px
+    }
+
+    .util-style-3 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--accent)
+    }
+
+    .util-style-4 {
+        color: var(--text)
+    }
+
+    .util-style-5 {
+        gap: 6px;
+        align-items: center
+    }
+
+    .util-style-6 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1s ease-in-out infinite
+    }
+
+    .util-style-7 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1s ease-in-out 0.2s infinite
+    }
+
+    .util-style-8 {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1s ease-in-out 0.4s infinite
+    }
+
+    .util-style-9 {
+        font-size: 12px;
+        color: var(--muted)
+    }
+
+    .util-style-10 {
+        align-items: center;
+        gap: 12px
+    }
+
+    .util-style-11 {
+        font-size: 10px;
+        color: var(--muted)
+    }
+
+    .util-style-12 {
+        font-size: 11px;
+        color: var(--muted)
+    }
+
+    .util-style-13 {
+        height: 100%
+    }
+
+    .util-style-14 {
+        min-height: 180px;
+        max-height: 260px;
+        overflow-y: auto
+    }
+
+    .util-style-15 {
+        color: var(--muted)
+    }
+
+    .util-style-16 {
+        width: 70px;
+        text-align: right;
+        padding: 2px 6px
+    }
+
+    .util-style-17 {
+        font-size: 16px
+    }
+
+    .util-style-18 {
+        margin-top: 10px;
+        flex-direction: column;
+        gap: 8px
+    }
+
+    .util-style-19 {
+        margin-bottom: 0
+    }
+
+    .util-style-20 {
+        width: 100%
+    }
+
+    .util-style-21 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600
+    }
+
+    .util-style-22 {
+        gap: 8px
+    }
+
+    .util-style-23 {
+        padding: 0;
+        overflow: hidden
+    }
+
+    .util-style-24 {
+        table-layout: fixed;
+        width: 100%
+    }
+
+    .util-style-25 {
+        width: 22%
+    }
+
+    .util-style-26 {
+        width: 12%
+    }
+
+    .util-style-27 {
+        width: 10%
+    }
+
+    .util-style-28 {
+        width: 13%
+    }
+
+    .util-style-29 {
+        width: 14%
+    }
+
+    .util-style-30 {
+        width: 6%
+    }
+
+    .util-style-31 {
+        margin-bottom: 12px
+    }
+
+    .util-style-32 {
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px
+    }
+
+    .util-style-33 {
+        font-size: 11px;
+        color: var(--muted);
+        white-space: nowrap
+    }
+
+    .util-style-34 {
+        width: auto
+    }
+
+    .util-style-35 {
+        margin-top: 12px
+    }
+
+    .util-style-36 {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 10px;
+        font-size: 11px;
+        gap: 16px;
+        flex-wrap: wrap
+    }
+
+    .util-style-37 {
+        color: var(--warn)
+    }
+
+    .util-style-38 {
+        color: var(--accent)
+    }
+
+    .util-style-39 {
+        padding: 0;
+        overflow: hidden;
+        overflow-x: auto
+    }
+
+    .util-style-40 {
+        table-layout: fixed;
+        width: 100%;
+        min-width: 750px
+    }
+
+    .util-style-41 {
+        width: 7%
+    }
+
+    .util-style-42 {
+        width: 9%
+    }
+
+    .util-style-43 {
+        width: 8%
+    }
+
+    .util-style-44 {
+        width: 340px;
+        text-align: center
+    }
+
+    .util-style-45 {
+        font-size: 32px;
+        margin-bottom: 8px
+    }
+
+    .util-style-46 {
+        justify-content: center;
+        flex-direction: column;
+        gap: 4px
+    }
+
+    .util-style-47 {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 400
+    }
+
+    .util-style-48 {
+        margin-bottom: 16px
+    }
+
+    .util-style-49 {
+        text-align: center;
+        letter-spacing: 4px;
+        font-size: 16px
+    }
+
+    .util-style-50 {
+        color: var(--danger);
+        font-size: 11px;
+        margin-top: 8px
+    }
+
+    .util-style-51 {
+        flex: 1
+    }
+
+    .util-style-52 {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 4px
+    }
+
+    .util-style-53 {
+        margin-bottom: 10px
+    }
+
+    .util-style-54 {
+        background: var(--surface);
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 12px;
+        font-size: 12px
+    }
+
+    .util-style-55 {
+        justify-content: space-between;
+        margin-bottom: 4px
+    }
+
+    .util-style-56 {
+        justify-content: space-between
+    }
+
+    .util-style-57 {
+        margin-bottom: 14px
+    }
+
+    .util-style-58 {
+        width: 580px
+    }
+
+    .util-style-59 {
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px
+    }
+
+    .util-style-60 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--green)
+    }
+
+    .util-style-61 {
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 8px
+    }
+
+    .util-style-62 {
+        color: var(--danger)
+    }
+
+    .util-style-63 {
+        color: var(--green)
+    }
+
+    .util-style-64 {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 2px
+    }
+
+    .util-style-65 {
+        font-size: 12px
+    }
+
+    .util-style-66 {
+        align-items: center;
+        gap: 4px
+    }
+
+    .util-style-67 {
+        width: 70px;
+        padding: 4px 6px;
+        text-align: right
+    }
+
+    .util-style-68 {
+        padding: 4px 8px
+    }
+
+    .util-style-69 {
+        text-align: center;
+        color: var(--muted);
+        padding: 30px
+    }
+
+    .util-style-70 {
+        font-size: 12px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap
+    }
+
+    .util-style-71 {
+        max-width: 160px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap
+    }
+
+    .util-style-72 {
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px
+    }
+
+    .util-style-73 {
+        gap: 16px
+    }
+
+    .util-style-74 {
+        color: var(--muted);
+        font-size: 10px
+    }
+
+    .util-style-75 {
+        font-size: 11px
+    }
+
+    .util-style-76 {
+        margin-top: 3px
+    }
+
+    .util-style-77 {
+        height: 3px;
+        width: 60px;
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden
+    }
+
+    .util-style-78 {
+        margin-bottom: 8px
+    }
+
+    .util-style-79 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    .util-style-80 {
+        text-align: right
+    }
+
+    .util-style-81 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 8px
+    }
+
+    .util-style-82 {
+        background: var(--card);
+        border-radius: 6px;
+        padding: 8px;
+        text-align: center
+    }
+
+    .util-style-83 {
+        font-size: 13px;
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--accent2)
+    }
+
+    .util-style-84 {
+        font-size: 13px;
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--green)
+    }
+
+    .util-style-85 {
+        margin-bottom: 6px
+    }
+
+    .util-style-86 {
+        justify-content: space-between;
+        font-size: 10px;
+        color: var(--muted);
+        margin-bottom: 10px
+    }
+
+    .util-style-87 {
+        gap: 6px;
+        flex-wrap: wrap
+    }
+
+    .util-style-88 {
+        flex: 1;
+        min-width: 200px;
+        background: var(--card);
+        border-radius: 8px;
+        padding: 8px;
+        border: 1px solid var(--border)
+    }
+
+    .util-style-89 {
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px
+    }
+
+    .util-style-90 {
+        font-size: 10px
+    }
+
+    .util-style-91 {
+        font-size: 12px;
+        margin-bottom: 6px
+    }
+
+    .util-style-92 {
+        gap: 4px
+    }
+
+    .util-style-93 {
+        border-color: var(--danger)
+    }
+
+    .util-style-94 {
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px
+    }
+
+    .util-style-95 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--danger)
+    }
+
+    .util-style-96 {
+        color: var(--danger);
+        font-size: 12px;
+        font-weight: 500
+    }
+
+    .util-style-97 {
+        justify-content: space-between;
+        align-items: center
+    }
+
+    .util-style-98 {
+        color: var(--danger);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 15px;
+        font-weight: 600
+    }
+
+    .util-style-99 {
+        font-size: 10px;
+        color: var(--muted);
+        margin-left: 6px
+    }
+
+    .util-style-100 {
+        gap: 6px
+    }
+
+    .util-style-101 {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--border)
+    }
+
+    .util-style-102 {
+        font-size: 14px
+    }
+
+    .util-style-103 {
+        font-size: 16px;
+        color: var(--accent)
+    }
+
+    .util-style-104 {
+        font-size: 12px;
+        margin-top: 2px
+    }
+
+    .util-style-105 {
+        justify-content: space-between;
+        font-size: 10px;
+        color: var(--muted);
+        margin-bottom: 4px
+    }
+
+    .util-style-106 {
+        margin-right: 6px
+    }
+
+    .util-style-107 {
+        font-size: 12px;
+        color: var(--accent)
+    }
+
+    .util-style-108 {
+        background: rgba(0, 0, 0, .25);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center
+    }
+
+    .util-style-109 {
+        font-size: 10px;
+        color: var(--green);
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 4px
+    }
+
+    .util-style-110 {
+        font-size: 28px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        color: #fff
+    }
+
+    .util-style-111 {
+        font-size: 22px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        color: var(--accent)
+    }
+
+    .util-style-112 {
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+        font-size: 12px
+    }
+
+    .util-style-113 {
+        font-size: 10px;
+        color: rgba(255, 255, 255, .4)
+    }
+
+    .util-style-114 {
+        font-size: 9px
+    }
+
+    .util-style-115 {
+        text-align: center;
+        color: rgba(255, 255, 255, .35);
+        font-size: 12px;
+        padding: 16px 0
+    }
+
+    .util-style-116 {
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12px
+    }
+
+    .util-style-117 {
+        flex-direction: column;
+        gap: 8px
+    }
+
+    .util-style-118 {
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border)
+    }
+
+    .util-style-119 {
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 6px 0
+    }
+
+    .util-style-120 {
+        display: flex
+    }
+
+    .util-style-121 {
+        display: none
+    }
+
+    .util-style-122 {
+        display: grid
+    }
+
+    #loginOverlay {
+        display: none;
+        z-index: 9998;
+        background: rgba(15, 17, 23, 0.95);
+    }
+
+    .login-card {
+        width: 320px;
+        text-align: center;
+        padding: 30px 20px;
+    }
+
+    .login-prompt {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 20px;
+    }
+
+    .login-input {
+        font-size: 24px;
+        text-align: center;
+        letter-spacing: 8px;
+        margin-bottom: 20px;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    #loginError {
+        color: var(--danger);
+        font-size: 11px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    #btnSettings,
+    #btnLogout,
+    #mainTabs {
+        display: none;
+    }
+
+    .modal-400 {
+        width: 400px;
+    }
+
+    .mb-16 {
+        margin-bottom: 16px;
+    }
+
+    .gap-10-align-center {
+        gap: 10px;
+        align-items: center;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+    .flex-2 {
+        flex: 2;
+    }
+</style>
+
+<div class="app util-style-1">
+    <!-- LOADING OVERLAY -->
+    <div class="util-style-2 util-style-120" id="loadingOverlay">
+        <div class="util-style-3">TATU CITY <span class="util-style-4">POS</span></div>
+        <div class="util-style-5 util-style-120">
+            <div class="util-style-6"></div>
+            <div class="util-style-7"></div>
+            <div class="util-style-8"></div>
+        </div>
+        <div class="util-style-9" id="loadingMsg">Connecting to Firebase...</div>
+    </div>
+
+    <!-- LOGIN OVERLAY -->
+    <div class="util-style-2" id="loginOverlay">
+        <div class="util-style-3">Welcome to <span class="util-style-4">TATU POS</span></div>
+        <div class="card login-card">
+            <div class="login-prompt">Please enter your PIN to continue</div>
+            <input type="password" id="loginPin" placeholder="•••••" class="login-input" maxlength="5"
+                onkeypress="if(event.key==='Enter') submitLogin()">
+            <button class="btn btn-primary w-100" onclick="submitLogin()">Login</button>
+            <div id="loginError">Invalid PIN</div>
+        </div>
+    </div>
+    <div class="topbar">
+        <div class="logo">TATU CITY <span>POS</span></div>
+        <div class="util-style-10 util-style-120">
+            <button id="btnSettings" class="btn btn-secondary btn-sm" onclick="openSettings()">⚙️ Settings</button>
+            <button id="btnLogout" class="btn btn-danger btn-sm" onclick="logout()">Logout</button>
+            <div class="util-style-11" id="syncStatus">⚡ Syncing...</div>
+            <div class="util-style-12" id="clock"></div>
+        </div>
+    </div>
+    <div class="tabs" id="mainTabs">
+        <div class="tab active" onclick="showTab('sell')">Point of Sale</div>
+        <div class="tab" onclick="showTab('inventory')">Inventory</div>
+        <div class="tab" id="tab-sales" onclick="showTab('sales')">Sales History</div>
+        <div class="tab" id="tab-loans" onclick="showTab('loans')">Loans</div>
+        <div class="tab" id="tab-dashboard" onclick="showTab('dashboard')">Dashboard</div>
+    </div>
+
+    <div class="body">
+
+        <!-- SELL -->
+        <div id="panel-sell" class="panel active">
+            <div class="pos-grid">
+                <div>
+                    <input class="search-bar" placeholder="Search items..." id="itemSearch" oninput="filterItems()">
+                    <div class="item-grid" id="itemGrid"></div>
+                </div>
+                <div>
+                    <div class="card util-style-13">
+                        <div class="card-title">Cart</div>
+                        <div class="util-style-14" id="cartList">
+                            <div class="empty-state">No items added yet</div>
+                        </div>
+                        <div class="cart-total util-style-121" id="cartTotalSection">
+                            <div class="total-row util-style-17"><span>Total</span><span class="grand-total"
+                                    id="totalVal">KSh 0</span></div>
+                        </div>
+                        <div class="util-style-18 util-style-120">
+                            <div class="row util-style-19">
+                                <div class="col"><label>Buyer Name</label><input id="buyerName"
+                                        placeholder="e.g. John Kamau"></div>
+                                <div class="col"><label>Payment</label>
+                                    <select id="paymentMethod" title="Payment Method">
+                                        <option>M-Pesa</option>
+                                        <option>Cash</option>
+                                        <option>Bank Transfer</option>
+                                        <option>Credit (Loan)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary util-style-20" onclick="processSale()">Complete Sale</button>
+                            <button class="btn btn-secondary btn-sm util-style-20" onclick="clearCart()">Clear
+                                Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVENTORY -->
+        <div id="panel-inventory" class="panel">
+            <div class="section-head">
+                <span class="util-style-21">Stock</span>
+                <button class="btn btn-primary btn-sm" onclick="showAddItem()">+ Add Item</button>
+            </div>
+            <div id="addItemForm" class="card util-style-121">
+                <div class="card-title">New Purchase / Stock Item</div>
+                <div class="row">
+                    <div class="col"><label>Item Name</label><input id="ni-name" placeholder="e.g. Samsung TV 32&quot;">
+                    </div>
+                    <div class="col"><label>Category</label>
+                        <select id="ni-cat" title="Category">
+                            <option>Electronics</option>
+                            <option>Furniture</option>
+                            <option>Clothing</option>
+                            <option>Appliances</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="col"><label>Condition</label>
+                        <select id="ni-cond" title="Condition">
+                            <option>Good</option>
+                            <option>Fair</option>
+                            <option>New</option>
+                            <option>Poor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>Buy Price (KSh)</label><input id="ni-buy" type="number" placeholder="0">
+                    </div>
+                    <div class="col"><label>Repair Cost (KSh)</label><input id="ni-repair" type="number"
+                            placeholder="0"></div>
+                    <div class="col"><label>Selling Price (KSh)</label><input id="ni-sell" type="number"
+                            placeholder="0"></div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>Notes</label><input id="ni-notes" placeholder="Optional notes"></div>
+                </div>
+                <div class="util-style-22 util-style-120">
+                    <button class="btn btn-primary" onclick="addItem()">Save Item</button>
+                    <button class="btn btn-secondary"
+                        onclick="document.getElementById('addItemForm').style.display='none'">Cancel</button>
+                </div>
+            </div>
+            <div class="card util-style-23">
+                <table class="util-style-24">
+                    <colgroup>
+                        <col class="util-style-25">
+                        <col class="util-style-26">
+                        <col class="util-style-27">
+                        <col class="util-style-28">
+                        <col class="util-style-28">
+                        <col class="util-style-29">
+                        <col class="util-style-27">
+                        <col class="util-style-30">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Category</th>
+                            <th>Condition</th>
+                            <th>Cost</th>
+                            <th>Sell Price</th>
+                            <th>Product ID</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SALES HISTORY -->
+        <div id="panel-sales" class="panel">
+            <div class="section-head util-style-31">
+                <span class="util-style-21">Sales Records</span>
+                <div class="util-style-120 gap-10-align-center">
+                    <button class="btn btn-danger btn-sm" onclick="clearAllSales()">Clear All Sales</button>
+                    <div class="today-badge">&#x1F7E2; Live Tracking</div>
+                </div>
+            </div>
+            <div class="sales-tabs">
+                <div class="sales-tab active" id="stab-daily" onclick="switchSalesView('daily')">Daily</div>
+                <div class="sales-tab" id="stab-weekly" onclick="switchSalesView('weekly')">Weekly</div>
+                <div class="sales-tab" id="stab-monthly" onclick="switchSalesView('monthly')">Monthly</div>
+            </div>
+            <div id="sview-daily">
+                <div class="sales-summary-grid" id="dailySummary"></div>
+                <div class="util-style-32 util-style-120">
+                    <label class="util-style-33">Select Date:</label>
+                    <input class="util-style-34" type="date" id="dailyDatePicker" onchange="renderDailySales()">
+                </div>
+                <div class="card util-style-23">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Item(s)</th>
+                                <th>Buyer</th>
+                                <th>Payment</th>
+                                <th>Amount</th>
+                                <th>Profit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailySalesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="util-style-121" id="sview-weekly">
+                <div class="sales-summary-grid" id="weeklySummary"></div>
+                <div class="util-style-32 util-style-120">
+                    <label class="util-style-33">Week of:</label>
+                    <input class="util-style-34" type="date" id="weeklyDatePicker" onchange="renderWeeklySales()">
+                </div>
+                <div class="card util-style-23">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Item(s)</th>
+                                <th>Buyer</th>
+                                <th>Payment</th>
+                                <th>Amount</th>
+                                <th>Profit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weeklySalesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="util-style-121" id="sview-monthly">
+                <div class="sales-summary-grid" id="monthlySummary"></div>
+                <div class="util-style-32 util-style-120">
+                    <label class="util-style-33">Month:</label>
+                    <select class="util-style-34" id="monthPicker" title="Month"
+                        onchange="renderMonthlySales()"></select>
+                    <select class="util-style-34" id="yearPicker" title="Year" onchange="renderMonthlySales()"></select>
+                </div>
+                <div class="card util-style-23">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Item(s)</th>
+                                <th>Buyer</th>
+                                <th>Payment</th>
+                                <th>Amount</th>
+                                <th>Profit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthlySalesBody"></tbody>
+                    </table>
+                </div>
+                <div class="card util-style-35">
+                    <div class="card-title">Daily Breakdown</div>
+                    <div id="monthlyBreakdown"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOANS -->
+        <div id="panel-loans" class="panel">
+            <div class="section-head">
+                <span class="util-style-21">Loan Management</span>
+                <button class="btn btn-primary btn-sm" onclick="showAddLoan()">+ New Loan</button>
+            </div>
+
+            <!-- New Loan Form -->
+            <div id="addLoanForm" class="card util-style-121">
+                <div class="card-title">Issue New Loan</div>
+                <div class="row">
+                    <div class="col flex-2">
+                        <label>Select Existing Customer (Optional)</label>
+                        <select id="nl-existing-customer" onchange="autofillCustomer()">
+                            <option value="">-- New Customer / Manual Entry --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>Full Name *</label><input id="nl-name" placeholder="e.g. Mary Wanjiku">
+                    </div>
+                    <div class="col"><label>ID Number *</label><input id="nl-idno" placeholder="e.g. 12345678"></div>
+                    <div class="col"><label>Phone *</label><input id="nl-phone" placeholder="07xx xxx xxx"></div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>Principal (KSh) *</label><input id="nl-principal" type="number"
+                            placeholder="0" oninput="previewRepayment()"></div>
+                    <div class="col"><label>Total Repayment Amount (KSh) *</label><input id="nl-rate" type="number"
+                            placeholder="e.g. 5500" oninput="previewRepayment()"></div>
+                    <div class="col"><label>Due Date</label><input id="nl-due" type="date"></div>
+                </div>
+                <div class="util-style-36 util-style-121" id="repayPreviewHint">
+                    <span class="util-style-15">Principal: <strong class="util-style-4"
+                            id="rp-principal">&#8212;</strong></span>
+                    &nbsp;&nbsp;
+                    <span class="util-style-15">Interest earned: <strong class="util-style-37"
+                            id="rp-interest">&#8212;</strong></span>
+                    &nbsp;&nbsp;
+                    <span class="util-style-15">Total to repay: <strong class="util-style-38"
+                            id="rp-total">&#8212;</strong></span>
+                </div>
+                <div class="row">
+                    <div class="col"><label>Purpose / Collateral</label><input id="nl-notes"
+                            placeholder="e.g. Household needs, TV as collateral"></div>
+                </div>
+                <div class="util-style-22 util-style-120">
+                    <button class="btn btn-primary" onclick="addLoan()">Issue Loan</button>
+                    <button class="btn btn-secondary"
+                        onclick="document.getElementById('addLoanForm').style.display='none'">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Loan View Tabs -->
+            <div class="loan-tabs">
+                <div class="loan-tab active" id="ltab-list" onclick="switchLoanView('list')">Active Loans</div>
+                <div class="loan-tab" id="ltab-customers" onclick="switchLoanView('customers')">Customers</div>
+                <div class="loan-tab" id="ltab-overdue" onclick="switchLoanView('overdue')">Overdue</div>
+                <div class="loan-tab" id="ltab-history" onclick="switchLoanView('history')">Loan History</div>
+            </div>
+
+            <!-- All Loans Table -->
+            <div id="lview-list">
+                <div class="card util-style-39">
+                    <table class="util-style-40">
+                        <colgroup>
+                            <col class="util-style-41">
+                            <col class="util-style-29">
+                            <col class="util-style-42">
+                            <col class="util-style-27">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-43">
+                            <col class="util-style-43">
+                            <col class="util-style-43">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Borrower</th>
+                                <th>Phone</th>
+                                <th>Principal</th>
+                                <th>Interest Earned</th>
+                                <th>Total Repay</th>
+                                <th>Repaid</th>
+                                <th>Balance</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loansBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Customers View -->
+            <div class="util-style-121" id="lview-customers">
+                <div id="customersList"></div>
+            </div>
+
+            <!-- Overdue View -->
+            <div class="util-style-121" id="lview-overdue">
+                <div id="overdueList"></div>
+            </div>
+
+            <!-- Loan History View -->
+            <div class="util-style-121" id="lview-history">
+                <div class="card util-style-39">
+                    <table class="util-style-40">
+                        <colgroup>
+                            <col class="util-style-41">
+                            <col class="util-style-29">
+                            <col class="util-style-42">
+                            <col class="util-style-27">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-42">
+                            <col class="util-style-43">
+                            <col class="util-style-43">
+                            <col class="util-style-43">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Borrower</th>
+                                <th>Phone</th>
+                                <th>Principal</th>
+                                <th>Interest Earned</th>
+                                <th>Total Repay</th>
+                                <th>Repaid</th>
+                                <th>Balance</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loanHistoryBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE PASSWORD MODAL -->
+        <div class="modal-overlay" id="deleteModal">
+            <div class="modal util-style-44">
+                <div class="util-style-45">🔐</div>
+                <div class="modal-title util-style-46">
+                    <span>Admin Password Required</span>
+                    <span class="util-style-47" id="deleteItemLabel"></span>
+                </div>
+                <div class="util-style-48">
+                    <input class="util-style-49" type="password" id="deletePasswordInput" placeholder="Enter password"
+                        onkeydown="if(event.key==='Enter')confirmDelete()">
+                    <div class="util-style-50 util-style-121" id="deleteErrorMsg">❌ Incorrect password. Access denied.
+                    </div>
+                </div>
+                <div class="util-style-22 util-style-120">
+                    <button class="btn btn-danger util-style-51" onclick="confirmDelete()">Delete Item</button>
+                    <button class="btn btn-secondary util-style-51" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAYMENT MODAL -->
+        <div class="modal-overlay" id="payModal">
+            <div class="modal pay-modal">
+                <div class="modal-title">
+                    <span>Record Payment</span>
+                    <span class="modal-close" onclick="closePayModal()">✕</span>
+                </div>
+                <div class="pay-amount-display">
+                    <div class="pay-label">Outstanding Balance</div>
+                    <div class="pay-balance" id="pmBalance">KSh 0</div>
+                    <div class="util-style-52" id="pmBorrower"></div>
+                </div>
+                <div class="util-style-53">
+                    <label class="util-style-12">Quick Amount</label>
+                    <div class="pay-quick-btns" id="pmQuickBtns"></div>
+                </div>
+                <div class="row util-style-31">
+                    <div class="col">
+                        <label>Payment Amount (KSh) *</label>
+                        <input type="number" id="pmAmount" placeholder="0" oninput="updatePayPreview()">
+                    </div>
+                    <div class="col">
+                        <label>Payment Method</label>
+                        <select id="pmMethod" title="Payment Method">
+                            <option>M-Pesa</option>
+                            <option>Cash</option>
+                            <option>Bank Transfer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="util-style-54 util-style-121" id="pmPreview">
+                    <div class="util-style-55 util-style-120"><span class="util-style-15">Paying</span><span
+                            class="util-style-38" id="pvPaying"></span></div>
+                    <div class="util-style-56 util-style-120"><span class="util-style-15">Remaining after</span><span
+                            id="pvRemaining"></span></div>
+                </div>
+                <div class="col util-style-57">
+                    <label>Note (optional)</label>
+                    <input id="pmNote" placeholder="e.g. M-Pesa ref MPESA123">
+                </div>
+                <div class="util-style-22 util-style-120">
+                    <button class="btn btn-primary util-style-51" onclick="confirmPayment()">✓ Confirm Payment</button>
+                    <button class="btn btn-secondary" onclick="closePayModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOAN HISTORY MODAL -->
+        <div class="modal-overlay" id="historyModal">
+            <div class="modal util-style-58">
+                <div class="modal-title">
+                    <span id="histModalTitle">Loan History</span>
+                    <span class="modal-close" onclick="closeHistoryModal()">✕</span>
+                </div>
+                <div id="histModalContent"></div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="panel-dashboard" class="panel">
+            <!-- TODAY'S SALES HIGHLIGHT -->
+            <div class="dash-today-card">
+                <div class="util-style-59 util-style-120">
+                    <div class="util-style-60">TODAY'S SALES</div>
+                    <div class="today-badge" id="todayDateLabel"></div>
+                </div>
+                <div class="dash-today-grid" id="todayKpis"></div>
+                <div class="util-style-35">
+                    <div class="util-style-61">Today's Transactions</div>
+                    <div id="todayTransactions"></div>
+                </div>
+            </div>
+            <!-- ALL-TIME KPIs -->
+            <div class="grid4 util-style-31" id="kpiGrid"></div>
+            <div class="grid2">
+                <div class="card">
+                    <div class="card-title">Recent Sales</div>
+                    <div id="recentSales"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Loan Summary</div>
+                    <div id="loanSummary"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal modal-400">
+            <div class="modal-title">System Settings <span class="modal-close"
+                    onclick="document.getElementById('settingsModal').classList.remove('open')">×</span></div>
+            <div class="row">
+                <div class="col"><label>Admin PIN</label><input type="password" id="setAdminPin" maxlength="5"></div>
+                <div class="col"><label>Member PIN</label><input type="password" id="setMemberPin" maxlength="5"></div>
+            </div>
+            <div class="util-style-12 mb-16">Make sure you remember these! PINs must be exactly 5 digits.</div>
+            <button class="btn btn-primary w-100" onclick="saveSettings()">Save Passwords</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Fallback to remove loading overlay if Firebase module fails to load (e.g. offline)
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            var overlay = document.getElementById('loadingOverlay');
+            if (overlay && overlay.style.display !== 'none') {
+                overlay.style.display = 'none';
+                var sync = document.getElementById('syncStatus');
+                if (sync) sync.innerHTML = '<span class="util-style-62">&#x26A0; Offline</span>';
+            }
+        }, 7000);
+    });
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDUGGzupiTCcCInpJ4QxWcH8XZoTSOSd-A",
+        authDomain: "tatu-city-pos.firebaseapp.com",
+        projectId: "tatu-city-pos",
+        storageBucket: "tatu-city-pos.firebasestorage.app",
+        messagingSenderId: "88947578377",
+        appId: "1:88947578377:web:ec55b06f23e1cd23184ad8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ---- COLLECTIONS ----
+    const invCol = () => collection(db, 'inventory');
+    const salesCol = () => collection(db, 'sales');
+    const loansCol = () => collection(db, 'loans');
+
+    // ---- IN-MEMORY STATE ----
+    let inventory = [];
+    let sales = [];
+    let loans = [];
+    let cart = [];
+    let nextId = 1000;
+    let nextLoanId = 100;
+
+    // ---- AUTH STATE ----
+    let adminPin = '84920';
+    let memberPin = '31574';
+    let currentUserRole = null;
+
+    function setSyncStatus(msg, ok = true) {
+        const el = document.getElementById('syncStatus');
+        if (el) el.innerHTML = ok
+            ? `<span class="util-style-63">&#x2714; ${msg}</span>`
+            : `<span class="util-style-62">&#x26A0; ${msg}</span>`;
+    }
+
+    // ---- LOAD ALL DATA + setup real-time listeners ----
+    function activeTab() {
+        const active = document.querySelector('.tab.active');
+        return active ? active.getAttribute('onclick').match(/'(\w+)'/)?.[1] : null;
+    }
+
+    async function initData() {
+        document.getElementById('loadingMsg').textContent = 'Connecting to Firebase...';
+
+        // Timeout: if Firebase takes >6s, unblock the UI anyway
+        const loadTimeout = setTimeout(() => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            setSyncStatus('Offline', false);
+            renderItems(); tick();
+        }, 6000);
+
+        try {
+            // Fetch all three collections in parallel
+            const [invSnap, salesSnap, loansSnap] = await Promise.all([
+                getDocs(invCol()), getDocs(salesCol()), getDocs(loansCol())
+            ]);
+
+            clearTimeout(loadTimeout);
+
+            inventory = invSnap.docs.map(d => ({ ...d.data(), _fbId: d.id }));
+            sales = salesSnap.docs.map(d => ({ ...d.data(), _fbId: d.id }))
+                .sort((a, b) => new Date(b.date) - new Date(a.date) || b.id - a.id);
+            loans = loansSnap.docs.map(d => ({ ...d.data(), _fbId: d.id }));
+
+            // Seed demo data if empty
+            if (inventory.length === 0 && sales.length === 0 && loans.length === 0) {
+                document.getElementById('loadingMsg').textContent = 'Setting up demo data...';
+                await seedDemoData();
+            }
+
+            // Compute next IDs
+            if (inventory.length) nextId = Math.max(...inventory.map(i => Number(i.id) || 0)) + 1;
+            if (loans.length) {
+                const nums = loans.map(l => { const m = String(l.id || '').match(/\d+/); return m ? parseInt(m[0]) : 0 });
+                nextLoanId = Math.max(...nums) + 1;
+            }
+
+            // Fetch Auth Config
+            try {
+                const authDocRef = doc(db, 'config', 'auth');
+                const authSnap = await getDoc(authDocRef);
+                if (authSnap.exists()) {
+                    adminPin = authSnap.data().adminPin || adminPin;
+                    memberPin = authSnap.data().memberPin || memberPin;
+                } else {
+                    await setDoc(authDocRef, { adminPin, memberPin });
+                }
+            } catch (e) { console.error("Could not fetch config", e); }
+
+            // Hide overlay immediately, show login
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('loginOverlay').style.display = 'flex';
+            setSyncStatus('Online');
+
+            // We do NOT call renderItems() or tick() yet, submitLogin will handle it.
+
+            // Real-time listeners: skip the first snapshot (data already loaded above)
+            let invReady = false, salesReady = false, loansReady = false;
+            onSnapshot(invCol(), snap => {
+                if (!invReady) { invReady = true; return; }
+                inventory = snap.docs.map(d => ({ ...d.data(), _fbId: d.id }));
+                const t = activeTab();
+                if (t === 'sell') renderItems();
+                if (t === 'inventory') renderInventory();
+            });
+            onSnapshot(salesCol(), snap => {
+                if (!salesReady) { salesReady = true; return; }
+                sales = snap.docs.map(d => ({ ...d.data(), _fbId: d.id }))
+                    .sort((a, b) => new Date(b.date) - new Date(a.date) || b.id - a.id);
+                const t = activeTab();
+                if (t === 'sales') renderSales();
+                if (t === 'dashboard') renderDashboard();
+            });
+            onSnapshot(loansCol(), snap => {
+                if (!loansReady) { loansReady = true; return; }
+                loans = snap.docs.map(d => ({ ...d.data(), _fbId: d.id }));
+                const t = activeTab();
+                if (t === 'loans') renderLoans();
+                if (t === 'dashboard') renderDashboard();
+            });
+
+        } catch (e) {
+            clearTimeout(loadTimeout);
+            console.error(e);
+
+            let errMsg = 'Offline';
+            if (e.message && e.message.includes("Cloud Firestore API has not been used")) {
+                errMsg = 'Firebase Error: Firestore Database not created/enabled!';
+            } else if (e.message && e.message.includes("Missing or insufficient permissions")) {
+                errMsg = 'Firebase Error: Permission denied (Check Firestore Rules)';
+            }
+
+            document.getElementById('loadingMsg').textContent = 'Error: ' + e.message;
+            setSyncStatus(errMsg, false);
+
+            // Unblock UI after 3s even on error so they can see the message briefly
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                renderItems(); tick();
+            }, 3000);
+        }
+    }
+
+    async function seedDemoData() {
+        const batch = writeBatch(db);
+        const today = new Date().toISOString().slice(0, 10);
+        const invItems = [
+            { id: 1, name: "Old Sofa", cat: "Furniture", cond: "Good", buy: 1500, repair: 200, sell: 3500, sellerId: "SLR-001", notes: "Corner sofa", status: "In Stock", date: "2026-04-28" },
+            { id: 2, name: 'LG TV 32"', cat: "Electronics", cond: "Fair", buy: 2000, repair: 0, sell: 5000, sellerId: "SLR-002", notes: "Remote missing", status: "In Stock", date: "2026-04-30" }
+        ];
+        invItems.forEach(i => batch.set(doc(invCol(), String(i.id)), i));
+        const demoSale = { id: Date.now(), date: today, items: "Demo Sale", buyer: "John Kamau", payment: "M-Pesa", amount: 3200, cost: 1700, profit: 1500 };
+        batch.set(doc(salesCol(), String(demoSale.id)), demoSale);
+        const demoLoan = {
+            id: "LN-001", borrower: "Mary Wanjiku", idNo: "29471823", phone: "0712345678", principal: 5000, totalRepay: 5500, rate: 0, due: "2026-06-01", repaid: 2000, notes: "Household needs",
+            history: [{ date: "2026-04-20", type: "issued", amount: 5000, method: "—", note: "Loan issued" }, { date: today, type: "payment", amount: 2000, method: "M-Pesa", note: "MPESA ref ABC123" }]
+        };
+        batch.set(doc(loansCol(), "LN-001"), demoLoan);
+        await batch.commit();
+        inventory = invItems.map(i => ({ ...i, _fbId: String(i.id) }));
+        sales = [demoSale].map(s => ({ ...s, _fbId: String(s.id) }));
+        loans = [demoLoan].map(l => ({ ...l, _fbId: l.id }));
+    }
+
+    // ---- AUTHENTICATION ----
+    function submitLogin() {
+        const pin = document.getElementById('loginPin').value;
+        const err = document.getElementById('loginError');
+        err.style.display = 'none';
+
+        if (String(pin).trim() === String(adminPin).trim()) {
+            currentUserRole = 'admin';
+        } else if (String(pin).trim() === String(memberPin).trim()) {
+            currentUserRole = 'member';
+        } else {
+            err.style.display = 'block';
+            return;
+        }
+
+        // Setup UI based on role
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('mainTabs').style.display = 'flex';
+        document.getElementById('btnLogout').style.display = 'block';
+
+        if (currentUserRole === 'admin') {
+            document.getElementById('btnSettings').style.display = 'block';
+            document.getElementById('tab-sales').style.display = 'block';
+            document.getElementById('tab-loans').style.display = 'block';
+            document.getElementById('tab-dashboard').style.display = 'block';
+        } else {
+            document.getElementById('btnSettings').style.display = 'none';
+            document.getElementById('tab-sales').style.display = 'none';
+            document.getElementById('tab-loans').style.display = 'none';
+            document.getElementById('tab-dashboard').style.display = 'none';
+        }
+
+        showTab('sell');
+        renderItems();
+        tick();
+    }
+    window.submitLogin = submitLogin;
+
+    function logout() {
+        currentUserRole = null;
+        document.getElementById('loginPin').value = '';
+        document.getElementById('mainTabs').style.display = 'none';
+        document.getElementById('btnLogout').style.display = 'none';
+        document.getElementById('btnSettings').style.display = 'none';
+        document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+        document.getElementById('loginOverlay').style.display = 'flex';
+    }
+    window.logout = logout;
+
+    function openSettings() {
+        document.getElementById('setAdminPin').value = adminPin;
+        document.getElementById('setMemberPin').value = memberPin;
+        document.getElementById('settingsModal').classList.add('open');
+    }
+    window.openSettings = openSettings;
+
+    async function saveSettings() {
+        const newAdmin = document.getElementById('setAdminPin').value;
+        const newMember = document.getElementById('setMemberPin').value;
+        if (newAdmin.length !== 5 || newMember.length !== 5) {
+            notify('PINs must be exactly 5 digits!', 'error');
+            return;
+        }
+        adminPin = newAdmin;
+        memberPin = newMember;
+
+        try {
+            await setDoc(doc(db, 'config', 'auth'), { adminPin, memberPin });
+            notify('Passwords saved successfully!');
+            document.getElementById('settingsModal').classList.remove('open');
+        } catch (e) {
+            notify('Error saving passwords: ' + e.message, 'error');
+        }
+    }
+    window.saveSettings = saveSettings;
+
+    // ---- HELPERS ----
+    function fmt(n) { return "KSh " + Number(n).toLocaleString() }
+
+    function notify(msg, type = 'success') {
+        const existing = document.querySelector('.notif'); if (existing) existing.remove();
+        const n = document.createElement('div');
+        n.className = 'notif notif-' + type; n.textContent = msg;
+        document.querySelector('.app').appendChild(n);
+        setTimeout(() => n.remove(), 3000);
+    }
+
+    function showTab(t) {
+        const tabs = ['sell', 'inventory', 'sales', 'loans', 'dashboard'];
+        document.querySelectorAll('.tab').forEach((el, i) => { el.classList.toggle('active', tabs[i] === t) });
+        document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+        document.getElementById('panel-' + t).classList.add('active');
+        if (t === 'sell') renderItems();
+        if (t === 'inventory') renderInventory();
+        if (t === 'sales') renderSales();
+        if (t === 'loans') renderLoans();
+        if (t === 'dashboard') renderDashboard();
+    }
+
+    // ---- POS ----
+    function renderItems() {
+        const q = (document.getElementById('itemSearch') || {}).value || '';
+        const items = inventory.filter(i => i.status === 'In Stock' && i.name.toLowerCase().includes(q.toLowerCase()));
+        const g = document.getElementById('itemGrid');
+        if (!items.length) { g.innerHTML = '<div class="empty-state">No items in stock</div>'; return }
+        g.innerHTML = items.map(i => `
+    <div class="item-card" onclick="window._addToCart(${i.id})">
+      <div class="item-cat">${i.cat}</div>
+      <div class="item-name">${i.name} (ID: ${i.id})</div>
+      <div class="item-price">${i.sell > 0 ? fmt(i.sell) : fmt(i.buy + i.repair)}</div>
+      <div class="util-style-64">${i.cond}</div>
+    </div>`).join('');
+    }
+
+    function filterItems() { renderItems() }
+    window.filterItems = filterItems;
+
+    function addToCart(id) {
+        const item = inventory.find(i => i.id === id || i.id === Number(id));
+        if (!item || item.status !== 'In Stock') { notify('Item not available', 'error'); return }
+        if (cart.find(c => c.id === id || c.id === Number(id))) { notify('Already in cart', 'error'); return }
+        cart.push({ ...item }); renderCart(); notify(item.name + ' added');
+    }
+    window._addToCart = addToCart;
+
+    function removeFromCart(id) { cart = cart.filter(c => String(c.id) !== String(id)); renderCart() }
+    window.removeFromCart = removeFromCart;
+
+    function renderCart() {
+        const cl = document.getElementById('cartList');
+        const tot = document.getElementById('cartTotalSection');
+        if (!cart.length) { cl.innerHTML = '<div class="empty-state">No items added yet</div>'; tot.style.display = 'none'; return }
+        tot.style.display = 'block';
+        cl.innerHTML = cart.map(c => {
+            const base = c.buy + c.repair;
+            const margin = c.sell - base;
+            const marginColor = margin >= 0 ? 'var(--green)' : 'var(--danger)';
+            return `
+    <div class="cart-item" style="flex-direction:column; align-items:stretch; gap:8px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-weight:600;">${c.name} (ID: ${c.id})</div>
+        <button class="btn btn-danger btn-sm util-style-68" onclick="removeFromCart('${c.id}')">✕</button>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted);">
+        <span>Base Cost: ${fmt(base)}</span>
+        <span id="margin-${c.id}" style="color:${marginColor}; font-weight:bold;">
+          ${margin >= 0 ? 'Profit: ' : 'Loss: '}${fmt(Math.abs(margin))}
+        </span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:11px; color:var(--muted);">Selling Price:</span>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <span style="font-size:11px; color:var(--muted);">KSh</span>
+          <input class="util-style-67" type="number" value="${c.sell}" oninput="updateCartPrice('${c.id}', this.value)" style="width:100px; text-align:right;">
+        </div>
+      </div>
+    </div>`}).join('');
+        recalcCart();
+    }
+
+    function updateCartPrice(id, newPrice) {
+        const item = cart.find(c => String(c.id) === String(id));
+        if (item) {
+            item.sell = parseFloat(newPrice) || 0;
+
+            const base = item.buy + item.repair;
+            const margin = item.sell - base;
+            const marginSpan = document.getElementById(`margin-${item.id}`);
+            if (marginSpan) {
+                marginSpan.style.color = margin >= 0 ? 'var(--green)' : 'var(--danger)';
+                marginSpan.textContent = (margin >= 0 ? 'Profit: ' : 'Loss: ') + fmt(Math.abs(margin));
+            }
+
+            recalcCart();
+        }
+    }
+    window.updateCartPrice = updateCartPrice;
+
+    function recalcCart() {
+        const total = cart.reduce((a, c) => a + c.sell, 0);
+        document.getElementById('totalVal').textContent = fmt(total);
+    }
+    window.recalcCart = recalcCart;
+
+    function clearCart() { cart = []; renderCart(); notify('Cart cleared') }
+    window.clearCart = clearCart;
+
+    async function processSale() {
+        if (!cart.length) { notify('Cart is empty', 'error'); return }
+        const buyer = document.getElementById('buyerName').value.trim() || 'Walk-in';
+        const payment = document.getElementById('paymentMethod').value;
+        const total = cart.reduce((a, c) => a + c.sell, 0);
+        const cost = cart.reduce((a, c) => a + (c.buy + c.repair), 0);
+        const profit = total - cost;
+        const names = cart.map(c => c.name).join(', ');
+        const saleId = Date.now();
+        const saleDoc = { id: saleId, date: new Date().toISOString().slice(0, 10), items: names, buyer, payment, amount: total, cost, profit };
+        try {
+            const batch = writeBatch(db);
+            // Save sale
+            batch.set(doc(salesCol(), String(saleId)), saleDoc);
+            // Mark items as sold
+            cart.forEach(c => {
+                const item = inventory.find(i => i.id === c.id || i.id === Number(c.id));
+                if (item && item._fbId) batch.update(doc(invCol(), item._fbId), { status: 'Sold' });
+            });
+            // Credit loan if needed
+            if (payment === 'Credit (Loan)') {
+                const today = new Date().toISOString().slice(0, 10);
+                const lId = 'LN-' + String(nextLoanId++).padStart(3, '0');
+                const lDoc = {
+                    id: lId, borrower: buyer, idNo: '', phone: '', principal: total, totalRepay: total, rate: 0, due: '', repaid: 0, notes: 'POS credit: ' + names,
+                    history: [{ date: today, type: 'issued', amount: total, method: '—', note: 'POS credit sale: ' + names }]
+                };
+                batch.set(doc(loansCol(), lId), lDoc);
+            }
+            await batch.commit();
+            cart = [];
+            document.getElementById('buyerName').value = '';
+            renderCart();
+            notify('Sale recorded! Profit: ' + fmt(profit));
+        } catch (e) { notify('Save failed: ' + e.message, 'error'); }
+    }
+    window.processSale = processSale;
+
+    // ---- INVENTORY ----
+    function showAddItem() {
+        const f = document.getElementById('addItemForm');
+        f.style.display = (f.style.display === 'none' || f.style.display === '') ? 'block' : 'none';
+    }
+    window.showAddItem = showAddItem;
+
+    async function addItem() {
+        const name = document.getElementById('ni-name').value.trim();
+        if (!name) { notify('Enter item name', 'error'); return }
+        const item = {
+            id: nextId++, name,
+            cat: document.getElementById('ni-cat').value,
+            cond: document.getElementById('ni-cond').value,
+            buy: parseFloat(document.getElementById('ni-buy').value) || 0,
+            repair: parseFloat(document.getElementById('ni-repair').value) || 0,
+            sell: parseFloat(document.getElementById('ni-sell').value) || 0,
+            notes: document.getElementById('ni-notes').value,
+            status: 'In Stock', date: new Date().toISOString().slice(0, 10)
+        };
+        try {
+            await setDoc(doc(invCol(), String(item.id)), item);
+            ['ni-name', 'ni-buy', 'ni-repair', 'ni-sell', 'ni-notes'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('addItemForm').style.display = 'none';
+            notify(name + ' added to stock');
+        } catch (e) { notify('Save failed: ' + e.message, 'error'); }
+    }
+    window.addItem = addItem;
+
+    function renderInventory() {
+        const body = document.getElementById('inventoryBody');
+        const visibleItems = inventory.filter(i => i.status !== 'Sold');
+        if (!visibleItems.length) { body.innerHTML = '<tr><td class="util-style-69" colspan="8">No items yet</td></tr>'; return }
+        body.innerHTML = visibleItems.map(i => `
+    <tr>
+      <td><div class="util-style-70">${i.name} (ID: ${i.id})</div><div class="util-style-11">${i.notes || ''}</div></td>
+      <td><span class="badge badge-blue">${i.cat}</span></td>
+      <td>${i.cond}</td>
+      <td>${fmt(i.buy + i.repair)}</td>
+      <td class="util-style-38">${fmt(i.sell)}</td>
+      <td class="util-style-12">${i.id}</td>
+      <td><span class="badge ${i.status === 'In Stock' ? 'badge-green' : 'badge-red'}">${i.status}</span></td>
+      <td>${i.status === 'In Stock' && currentUserRole === 'admin' ? `<button class="btn btn-danger btn-sm" onclick="removeItem('${i._fbId || i.id}')">Del</button>` : '—'}</td>
+    </tr>`).join('');
+    }
+
+    // ---- DELETE ----
+    let pendingDeleteFbId = null;
+    let pendingDeleteType = 'item';
+    let pendingDeleteLoanFbId = null;
+
+    function removeItem(fbId) {
+        const item = inventory.find(i => i._fbId === fbId || String(i.id) === String(fbId));
+        if (!item) return;
+        pendingDeleteFbId = item._fbId || String(item.id);
+        pendingDeleteType = 'item';
+        document.getElementById('deleteItemLabel').textContent = 'Deleting: ' + item.name;
+        document.getElementById('deletePasswordInput').value = '';
+        document.getElementById('deleteErrorMsg').style.display = 'none';
+        document.getElementById('deleteModal').classList.add('open');
+        setTimeout(() => document.getElementById('deletePasswordInput').focus(), 100);
+    }
+    window.removeItem = removeItem;
+
+    function deleteLoan(fbId) {
+        const l = loans.find(l => l._fbId === fbId || l.id === fbId);
+        if (!l) return;
+        pendingDeleteLoanFbId = l._fbId || l.id;
+        pendingDeleteType = 'loan';
+        document.getElementById('deleteItemLabel').textContent = 'Deleting loan: ' + l.id + ' — ' + l.borrower;
+        document.getElementById('deletePasswordInput').value = '';
+        document.getElementById('deleteErrorMsg').style.display = 'none';
+        document.getElementById('deleteModal').classList.add('open');
+        setTimeout(() => document.getElementById('deletePasswordInput').focus(), 100);
+    }
+    window.deleteLoan = deleteLoan;
+
+    async function confirmDelete() {
+        const pwd = document.getElementById('deletePasswordInput').value;
+        if (String(pwd).trim() === String(adminPin).trim()) {
+            try {
+                if (pendingDeleteType === 'item') {
+                    await deleteDoc(doc(db, 'inventory', pendingDeleteFbId));
+                    inventory = inventory.filter(i => (i._fbId || String(i.id)) !== pendingDeleteFbId);
+                    renderInventory();
+                    closeDeleteModal();
+                    notify('Item deleted successfully');
+                } else if (pendingDeleteType === 'loan') {
+                    const l = loans.find(l => l._fbId === pendingDeleteLoanFbId || l.id === pendingDeleteLoanFbId);
+                    const name = l ? l.borrower : 'record';
+                    await deleteDoc(doc(db, 'loans', pendingDeleteLoanFbId));
+                    loans = loans.filter(l => (l._fbId || String(l.id)) !== pendingDeleteLoanFbId);
+                    renderLoans();
+                    closeDeleteModal();
+                    closeHistoryModal();
+                    notify('Loan record for ' + name + ' deleted');
+                } else if (pendingDeleteType === 'sale') {
+                    await deleteDoc(doc(db, 'sales', pendingDeleteFbId));
+                    sales = sales.filter(s => (s._fbId || String(s.id)) !== pendingDeleteFbId);
+                    renderSales();
+                    closeDeleteModal();
+                    notify('Sale deleted successfully');
+                } else if (pendingDeleteType === 'all_sales') {
+                    const batch = writeBatch(db);
+                    sales.forEach(s => {
+                        batch.delete(doc(db, 'sales', s._fbId || String(s.id)));
+                    });
+                    await batch.commit();
+                    sales = [];
+                    renderSales();
+                    closeDeleteModal();
+                    notify('All sales cleared successfully');
+                }
+            } catch (e) {
+                document.getElementById('deleteErrorMsg').textContent = 'Error: ' + e.message;
+                document.getElementById('deleteErrorMsg').style.display = 'block';
+            }
+        } else {
+            document.getElementById('deleteErrorMsg').style.display = 'block';
+            document.getElementById('deletePasswordInput').value = '';
+            document.getElementById('deletePasswordInput').focus();
+        }
+    }
+    window.confirmDelete = confirmDelete;
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.remove('open');
+        pendingDeleteFbId = null; pendingDeleteLoanFbId = null; pendingDeleteType = 'item';
+    }
+    window.closeDeleteModal = closeDeleteModal;
+
+    // ---- SALES ----
+    function renderSales() {
+        const today = new Date().toISOString().slice(0, 10);
+        const dp = document.getElementById('dailyDatePicker');
+        if (!dp.value) dp.value = today;
+        const wp = document.getElementById('weeklyDatePicker');
+        if (!wp.value) wp.value = today;
+        const mp = document.getElementById('monthPicker');
+        const yp = document.getElementById('yearPicker');
+        if (!mp.children.length) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            months.forEach((m, i) => { const o = document.createElement('option'); o.value = i; o.textContent = m; mp.appendChild(o) });
+            mp.value = new Date().getMonth();
+            const curY = new Date().getFullYear();
+            for (let y = curY; y >= curY - 3; y--) { const o = document.createElement('option'); o.value = y; o.textContent = y; yp.appendChild(o) }
+        }
+        renderDailySales(); renderWeeklySales(); renderMonthlySales();
+    }
+
+    function salesSummaryCard(label, val, sub, color) {
+        return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val" style="color:${color};font-size:18px">${val}</div>${sub ? `<div class="util-style-11">${sub}</div>` : ''}</div>`;
+    }
+
+    function salesRows(filtered) {
+        if (!filtered.length) return '<tr><td class="util-style-69" colspan="7">No sales for this period</td></tr>';
+        return filtered.map(s => `<tr>
+    <td>${s.date}</td>
+    <td class="util-style-71">${s.items}</td>
+    <td>${s.buyer}</td>
+    <td><span class="badge badge-blue">${s.payment}</span></td>
+    <td class="util-style-38">${fmt(s.amount)}</td>
+    <td style="color:${s.profit >= 0 ? 'var(--green)' : 'var(--danger)'}">${fmt(s.profit)}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="removeSale('${s._fbId || s.id}')">Del</button></td>
+  </tr>`).join('');
+    }
+
+    function removeSale(fbId) {
+        const sale = sales.find(s => s._fbId === fbId || String(s.id) === String(fbId));
+        if (!sale) return;
+        pendingDeleteFbId = sale._fbId || String(sale.id);
+        pendingDeleteType = 'sale';
+        document.getElementById('deleteItemLabel').textContent = 'Deleting sale: ' + sale.items;
+        document.getElementById('deletePasswordInput').value = '';
+        document.getElementById('deleteErrorMsg').style.display = 'none';
+        document.getElementById('deleteModal').classList.add('open');
+        setTimeout(() => document.getElementById('deletePasswordInput').focus(), 100);
+    }
+    window.removeSale = removeSale;
+
+    function clearAllSales() {
+        pendingDeleteType = 'all_sales';
+        document.getElementById('deleteItemLabel').textContent = 'WARNING: Deleting ALL sales records!';
+        document.getElementById('deletePasswordInput').value = '';
+        document.getElementById('deleteErrorMsg').style.display = 'none';
+        document.getElementById('deleteModal').classList.add('open');
+        setTimeout(() => document.getElementById('deletePasswordInput').focus(), 100);
+    }
+    window.clearAllSales = clearAllSales;
+
+    function renderDailySales() {
+        const date = document.getElementById('dailyDatePicker').value || new Date().toISOString().slice(0, 10);
+        const filtered = sales.filter(s => s.date === date);
+        const total = filtered.reduce((a, s) => a + s.amount, 0);
+        const profit = filtered.reduce((a, s) => a + s.profit, 0);
+        document.getElementById('dailySummary').innerHTML =
+            salesSummaryCard('Transactions', filtered.length, 'sales this day', 'var(--accent2)') +
+            salesSummaryCard('Revenue', fmt(total), '', 'var(--accent)') +
+            salesSummaryCard('Profit', fmt(profit), '', 'var(--green)');
+        document.getElementById('dailySalesBody').innerHTML = salesRows(filtered);
+    }
+    window.renderDailySales = renderDailySales;
+
+    function renderWeeklySales() {
+        const base = new Date(document.getElementById('weeklyDatePicker').value || new Date().toISOString().slice(0, 10));
+        const day = base.getDay();
+        const mon = new Date(base); mon.setDate(base.getDate() - (day === 0 ? 6 : day - 1));
+        const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+        const monStr = mon.toISOString().slice(0, 10);
+        const sunStr = sun.toISOString().slice(0, 10);
+        const filtered = sales.filter(s => s.date >= monStr && s.date <= sunStr);
+        const total = filtered.reduce((a, s) => a + s.amount, 0);
+        const profit = filtered.reduce((a, s) => a + s.profit, 0);
+        document.getElementById('weeklySummary').innerHTML =
+            salesSummaryCard('Transactions', filtered.length, monStr + ' — ' + sunStr, 'var(--accent2)') +
+            salesSummaryCard('Revenue', fmt(total), '7-day total', 'var(--accent)') +
+            salesSummaryCard('Profit', fmt(profit), '', 'var(--green)');
+        document.getElementById('weeklySalesBody').innerHTML = salesRows(filtered);
+    }
+    window.renderWeeklySales = renderWeeklySales;
+
+    function renderMonthlySales() {
+        const month = parseInt(document.getElementById('monthPicker').value);
+        const year = parseInt(document.getElementById('yearPicker').value);
+        const filtered = sales.filter(s => { const d = new Date(s.date); return d.getMonth() === month && d.getFullYear() === year });
+        const total = filtered.reduce((a, s) => a + s.amount, 0);
+        const profit = filtered.reduce((a, s) => a + s.profit, 0);
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        document.getElementById('monthlySummary').innerHTML =
+            salesSummaryCard('Transactions', filtered.length, monthNames[month] + ' ' + year, 'var(--accent2)') +
+            salesSummaryCard('Revenue', fmt(total), 'month total', 'var(--accent)') +
+            salesSummaryCard('Profit', fmt(profit), '', 'var(--green)');
+        document.getElementById('monthlySalesBody').innerHTML = salesRows(filtered);
+        const byDay = {};
+        filtered.forEach(s => { if (!byDay[s.date]) byDay[s.date] = { count: 0, amount: 0, profit: 0 }; byDay[s.date].count++; byDay[s.date].amount += s.amount; byDay[s.date].profit += s.profit });
+        const days = Object.keys(byDay).sort();
+        document.getElementById('monthlyBreakdown').innerHTML = days.length ? days.map(d => `
+    <div class="util-style-72 util-style-120">
+      <div class="util-style-15">${d}</div>
+      <div class="util-style-73 util-style-120">
+        <span class="util-style-74">${byDay[d].count} sale(s)</span>
+        <span class="util-style-38">${fmt(byDay[d].amount)}</span>
+        <span class="util-style-63">${fmt(byDay[d].profit)} profit</span>
+      </div>
+    </div>`).join('') : '<div class="empty-state">No data for this month</div>';
+    }
+    window.renderMonthlySales = renderMonthlySales;
+
+    function switchSalesView(v) {
+        ['daily', 'weekly', 'monthly'].forEach(t => {
+            document.getElementById('sview-' + t).style.display = t === v ? 'block' : 'none';
+            document.getElementById('stab-' + t).classList.toggle('active', t === v);
+        });
+        if (v === 'daily') renderDailySales();
+        if (v === 'weekly') renderWeeklySales();
+        if (v === 'monthly') renderMonthlySales();
+    }
+    window.switchSalesView = switchSalesView;
+
+    // ---- LOANS ----
+    function loanStatus(l) {
+        const bal = loanBalance(l);
+        if (bal <= 0) return 'Fully Paid';
+        if (l.due && new Date(l.due) < new Date()) return 'Overdue';
+        return 'Active';
+    }
+    function loanTotal(l) { return l.totalRepay !== undefined ? l.totalRepay : l.principal * (1 + l.rate / 100) }
+    function loanBalance(l) { return Math.max(0, loanTotal(l) - (l.repaid || 0)) }
+
+    function showAddLoan() {
+        const f = document.getElementById('addLoanForm');
+        f.style.display = (f.style.display === 'none' || f.style.display === '') ? 'block' : 'none';
+        const d = new Date(); d.setMonth(d.getMonth() + 1);
+        document.getElementById('nl-due').value = d.toISOString().slice(0, 10);
+
+        const sel = document.getElementById('nl-existing-customer');
+        if (sel) {
+            sel.innerHTML = '<option value="">-- New Customer / Manual Entry --</option>';
+            const map = {};
+            loans.forEach(l => { if (!map[l.borrower]) map[l.borrower] = l });
+            Object.values(map).forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.borrower;
+                opt.dataset.idno = c.idNo || '';
+                opt.dataset.phone = c.phone || '';
+                opt.textContent = c.borrower + (c.phone ? ' (' + c.phone + ')' : '');
+                sel.appendChild(opt);
+            });
+        }
+    }
+    window.showAddLoan = showAddLoan;
+
+    function autofillCustomer() {
+        const sel = document.getElementById('nl-existing-customer');
+        if (!sel || sel.value === "") return;
+        const opt = sel.options[sel.selectedIndex];
+        document.getElementById('nl-name').value = opt.value;
+        document.getElementById('nl-idno').value = opt.dataset.idno || '';
+        document.getElementById('nl-phone').value = opt.dataset.phone || '';
+    }
+    window.autofillCustomer = autofillCustomer;
+
+    function previewRepayment() {
+        const principal = parseFloat(document.getElementById('nl-principal').value) || 0;
+        const totalRepay = parseFloat(document.getElementById('nl-rate').value) || 0;
+        const hint = document.getElementById('repayPreviewHint');
+        if (principal > 0 || totalRepay > 0) {
+            hint.style.display = 'flex';
+            document.getElementById('rp-principal').textContent = principal ? 'KSh ' + Number(principal).toLocaleString() : '—';
+            const interest = totalRepay - principal;
+            document.getElementById('rp-interest').textContent = totalRepay && principal ? 'KSh ' + Number(Math.max(0, interest)).toLocaleString() : '—';
+            document.getElementById('rp-total').textContent = totalRepay ? 'KSh ' + Number(totalRepay).toLocaleString() : '—';
+        } else { hint.style.display = 'none'; }
+    }
+    window.previewRepayment = previewRepayment;
+
+    async function addLoan() {
+        const name = document.getElementById('nl-name').value.trim();
+        const idNo = document.getElementById('nl-idno').value.trim();
+        const phone = document.getElementById('nl-phone').value.trim();
+        if (!name) { notify('Enter borrower name', 'error'); return }
+        if (!idNo) { notify('Enter ID number', 'error'); return }
+        if (!phone) { notify('Enter phone number', 'error'); return }
+        const principal = parseFloat(document.getElementById('nl-principal').value) || 0;
+        if (!principal) { notify('Enter loan amount', 'error'); return }
+        const totalRepay = parseFloat(document.getElementById('nl-rate').value) || 0;
+        if (!totalRepay) { notify('Enter total repayment amount', 'error'); return }
+        const today = new Date().toISOString().slice(0, 10);
+        const lId = 'LN-' + String(nextLoanId++).padStart(3, '0');
+        const lDoc = {
+            id: lId, borrower: name, idNo, phone, principal, totalRepay, rate: 0,
+            due: document.getElementById('nl-due').value,
+            repaid: 0, notes: document.getElementById('nl-notes').value,
+            history: [{ date: today, type: 'issued', amount: principal, method: '—', note: 'Loan issued' }]
+        };
+        try {
+            await setDoc(doc(loansCol(), lId), lDoc);
+            ['nl-name', 'nl-idno', 'nl-phone', 'nl-principal', 'nl-notes'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('nl-rate').value = '';
+            document.getElementById('addLoanForm').style.display = 'none';
+            document.getElementById('repayPreviewHint').style.display = 'none';
+            notify('Loan issued to ' + name);
+        } catch (e) { notify('Save failed: ' + e.message, 'error'); }
+    }
+    window.addLoan = addLoan;
+
+    function renderLoans() {
+        renderLoansList();
+        renderCustomers();
+        renderOverdue();
+        renderLoanHistory();
+    }
+
+    function renderLoansList() {
+        const body = document.getElementById('loansBody');
+        const activeLoans = loans.filter(l => loanStatus(l) !== 'Fully Paid');
+        if (!activeLoans.length) { body.innerHTML = '<tr><td class="util-style-69" colspan="11">No active loans yet</td></tr>'; return }
+        body.innerHTML = activeLoans.map(l => {
+            const total = loanTotal(l);
+            const interest = total - l.principal;
+            const bal = loanBalance(l);
+            const repaid = l.repaid || 0;
+            const pct = Math.min(100, Math.round((repaid / total) * 100));
+            const st = loanStatus(l);
+            const fbId = l._fbId || l.id;
+            return `<tr>
+      <td>${l.id}</td>
+      <td>${l.borrower}</td>
+      <td class="util-style-75">${l.phone}</td>
+      <td>${fmt(l.principal)}</td>
+      <td>${fmt(interest)}</td>
+      <td class="util-style-38">${fmt(total)}</td>
+      <td class="util-style-63">${fmt(repaid)}</td>
+      <td style="color:${bal > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(bal)}</td>
+      <td class="util-style-75">${l.due || '—'}</td>
+      <td><span class="${st === 'Fully Paid' ? 'loan-status-paid' : st === 'Overdue' ? 'loan-status-overdue' : 'loan-status-active'}">${st}</span>
+        <div class="util-style-76"><div class="util-style-77"><div style="height:100%;width:${pct}%;background:var(--accent)"></div></div></div>
+      </td>
+      <td>
+        ${st !== 'Fully Paid' ? `<button class="btn btn-warn btn-sm" onclick="openPayModal('${fbId}')">Pay</button>` : ''}
+        <button class="btn btn-blue btn-sm" onclick="openHistoryModal('${fbId}')">Hist</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLoan('${fbId}')">Del</button>
+      </td>
+    </tr>`;
+        }).join('');
+    }
+
+    function renderLoanHistory() {
+        const body = document.getElementById('loanHistoryBody');
+        const historyLoans = loans.filter(l => loanStatus(l) === 'Fully Paid');
+        if (!historyLoans.length) { body.innerHTML = '<tr><td class="util-style-69" colspan="11">No fully paid loans yet</td></tr>'; return }
+        body.innerHTML = historyLoans.map(l => {
+            const total = loanTotal(l);
+            const interest = total - l.principal;
+            const bal = loanBalance(l);
+            const repaid = l.repaid || 0;
+            const pct = Math.min(100, Math.round((repaid / total) * 100));
+            const st = loanStatus(l);
+            const fbId = l._fbId || l.id;
+            return `<tr>
+      <td>${l.id}</td>
+      <td>${l.borrower}</td>
+      <td class="util-style-75">${l.phone}</td>
+      <td>${fmt(l.principal)}</td>
+      <td>${fmt(interest)}</td>
+      <td class="util-style-38">${fmt(total)}</td>
+      <td class="util-style-63">${fmt(repaid)}</td>
+      <td style="color:${bal > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(bal)}</td>
+      <td class="util-style-75">${l.due || '—'}</td>
+      <td><span class="${st === 'Fully Paid' ? 'loan-status-paid' : st === 'Overdue' ? 'loan-status-overdue' : 'loan-status-active'}">${st}</span>
+        <div class="util-style-76"><div class="util-style-77"><div style="height:100%;width:${pct}%;background:var(--accent)"></div></div></div>
+      </td>
+      <td>
+        <button class="btn btn-blue btn-sm" onclick="openHistoryModal('${fbId}')">Hist</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLoan('${fbId}')">Del</button>
+      </td>
+    </tr>`;
+        }).join('');
+    }
+
+    function switchLoanView(v) {
+        ['list', 'customers', 'overdue', 'history'].forEach(t => {
+            const lview = document.getElementById('lview-' + t);
+            const ltab = document.getElementById('ltab-' + t);
+            if (lview) lview.style.display = t === v ? 'block' : 'none';
+            if (ltab) ltab.classList.toggle('active', t === v);
+        });
+    }
+    window.switchLoanView = switchLoanView;
+
+    function renderCustomers() {
+        const el = document.getElementById('customersList');
+        const map = {};
+        loans.forEach(l => { if (!map[l.borrower]) map[l.borrower] = { name: l.borrower, phone: l.phone, idNo: l.idNo, loans: [] }; map[l.borrower].loans.push(l) });
+        const customers = Object.values(map);
+        if (!customers.length) { el.innerHTML = '<div class="empty-state">No customers yet</div>'; return }
+        el.innerHTML = customers.map((c, idx) => {
+            const totalBorrowed = c.loans.reduce((a, l) => a + l.principal, 0);
+            const totalRepaidC = c.loans.reduce((a, l) => a + (l.repaid || 0), 0);
+            const totalOutC = c.loans.reduce((a, l) => a + loanBalance(l), 0);
+            const active = c.loans.filter(l => loanStatus(l) !== 'Fully Paid').length;
+            const pct = totalBorrowed > 0 ? Math.min(100, Math.round(totalRepaidC / totalBorrowed * 100)) : 100;
+            return `<div class="customer-card">
+      <div class="history-item-row util-style-78" style="cursor:pointer; margin-bottom:0;" onclick="const details = document.getElementById('cust-details-${idx}'); details.style.display = details.style.display === 'none' ? 'block' : 'none'; this.parentElement.classList.toggle('expanded');">
+        <div>
+          <div class="util-style-79">${c.name}</div>
+          <div class="util-style-12">Balance: <strong style="color:${totalOutC > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(totalOutC)}</strong> (Click to view details)</div>
+        </div>
+      </div>
+      <div id="cust-details-${idx}" style="display:none; margin-top:12px; border-top:1px solid var(--border); padding-top:12px;">
+        <div class="history-item-row util-style-78">
+          <div><div class="util-style-12">ID: ${c.idNo || '—'} &nbsp;·&nbsp; ${c.phone}</div></div>
+        </div>
+        <div class="util-style-81 util-style-122">
+          <div class="util-style-82">
+            <div class="util-style-11">Borrowed</div>
+            <div class="util-style-83">${fmt(totalBorrowed)}</div>
+          </div>
+          <div class="util-style-82">
+            <div class="util-style-11">Repaid</div>
+            <div class="util-style-84">${fmt(totalRepaidC)}</div>
+          </div>
+          <div class="util-style-82">
+            <div class="util-style-11">Outstanding</div>
+            <div style="font-size:13px;font-family:'Space Grotesk',sans-serif;color:${totalOutC > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(totalOutC)}</div>
+          </div>
+        </div>
+        <div class="progress-bar util-style-85"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="util-style-86 util-style-120"><span>${pct}% overall repaid</span><span>${active} active loan(s)</span></div>
+        <div class="util-style-87 util-style-120">
+          ${c.loans.map(l => {
+                const fbId = l._fbId || l.id;
+                return `<div class="util-style-88">
+              <div class="util-style-89 util-style-120">
+                <span class="util-style-12">${l.id}</span>
+                <span class="${loanStatus(l) === 'Fully Paid' ? 'loan-status-paid' : loanStatus(l) === 'Overdue' ? 'loan-status-overdue' : 'loan-status-active'} util-style-90">${loanStatus(l)}</span>
+              </div>
+              <div class="util-style-91">${fmt(l.principal)} &#x2192; repay ${fmt(loanTotal(l))} — Balance: <strong style="color:${loanBalance(l) > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(loanBalance(l))}</strong></div>
+              <div class="util-style-92 util-style-120">
+                ${loanStatus(l) !== 'Fully Paid' ? `<button class="btn btn-warn btn-sm" onclick="openPayModal('${fbId}')">Pay</button>` : ''}
+                <button class="btn btn-blue btn-sm" onclick="openHistoryModal('${fbId}')">History</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteLoan('${fbId}')">Del</button>
+              </div>
+            </div>`;
+            }).join('')}
+        </div>
+      </div>
+    </div>`;
+        }).join('');
+    }
+
+    function renderOverdue() {
+        const el = document.getElementById('overdueList');
+        const overdue = loans.filter(l => loanStatus(l) === 'Overdue');
+        if (!overdue.length) { el.innerHTML = '<div class="empty-state util-style-63">&#x2713; No overdue loans</div>'; return }
+        el.innerHTML = overdue.map(l => {
+            const daysOver = Math.floor((new Date() - new Date(l.due)) / (1000 * 60 * 60 * 24));
+            const bal = loanBalance(l);
+            const fbId = l._fbId || l.id;
+            return `<div class="card util-style-93">
+      <div class="util-style-94 util-style-120">
+        <div>
+          <div class="util-style-95">${l.borrower}</div>
+          <div class="util-style-12">ID: ${l.idNo || '—'} &nbsp;·&nbsp; &#x1F4DE; ${l.phone} &nbsp;·&nbsp; ${l.id}</div>
+        </div>
+        <div class="util-style-80">
+          <div class="util-style-96">${daysOver} day(s) overdue</div>
+          <div class="util-style-12">Due: ${l.due}</div>
+        </div>
+      </div>
+      <div class="util-style-97 util-style-120">
+        <div>
+          <span class="util-style-12">Outstanding: </span>
+          <span class="util-style-98">${fmt(bal)}</span>
+          <span class="util-style-99">(of ${fmt(loanTotal(l))} total)</span>
+        </div>
+        <div class="util-style-100 util-style-120">
+          <button class="btn btn-warn btn-sm" onclick="openPayModal('${fbId}')">Record Payment</button>
+          <button class="btn btn-blue btn-sm" onclick="openHistoryModal('${fbId}')">View History</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteLoan('${fbId}')">Del</button>
+        </div>
+      </div>
+      ${l.notes ? `<div class="util-style-101">&#x1F4CC; ${l.notes}</div>` : ''}
+    </div>`;
+        }).join('');
+    }
+
+    // ---- PAYMENT MODAL ----
+    let activeLoanFbId = null;
+    function openPayModal(fbId) {
+        activeLoanFbId = fbId;
+        const l = loans.find(l => l._fbId === fbId || l.id === fbId);
+        if (!l) return;
+        const bal = loanBalance(l);
+        document.getElementById('pmBalance').textContent = fmt(bal);
+        document.getElementById('pmBorrower').textContent = l.borrower + ' · ID: ' + l.idNo + ' · ' + l.phone;
+        document.getElementById('pmAmount').value = '';
+        document.getElementById('pmNote').value = '';
+        document.getElementById('pmPreview').style.display = 'none';
+        const thirds = [Math.round(bal / 4), Math.round(bal / 2), Math.round(bal * 3 / 4), bal];
+        const labels = ['25%', '50%', '75%', 'Full'];
+        document.getElementById('pmQuickBtns').innerHTML = thirds.map((v, i) => `
+    <div class="pay-quick" onclick="document.getElementById('pmAmount').value=${v};updatePayPreview()">${labels[i]} — ${fmt(v)}</div>
+  `).join('');
+        document.getElementById('payModal').classList.add('open');
+    }
+    window.openPayModal = openPayModal;
+
+    function closePayModal() { document.getElementById('payModal').classList.remove('open'); activeLoanFbId = null }
+    window.closePayModal = closePayModal;
+
+    function updatePayPreview() {
+        const amt = parseFloat(document.getElementById('pmAmount').value) || 0;
+        if (!amt || !activeLoanFbId) { document.getElementById('pmPreview').style.display = 'none'; return }
+        const l = loans.find(l => l._fbId === activeLoanFbId || l.id === activeLoanFbId);
+        if (!l) return;
+        const bal = loanBalance(l);
+        const remaining = Math.max(0, bal - amt);
+        document.getElementById('pvPaying').textContent = fmt(amt);
+        document.getElementById('pvRemaining').textContent = fmt(remaining);
+        document.getElementById('pvRemaining').style.color = remaining === 0 ? 'var(--green)' : 'var(--warn)';
+        document.getElementById('pmPreview').style.display = 'block';
+    }
+    window.updatePayPreview = updatePayPreview;
+
+    async function confirmPayment() {
+        if (!activeLoanFbId) return;
+        const amt = parseFloat(document.getElementById('pmAmount').value) || 0;
+        if (!amt || amt <= 0) { notify('Enter a valid amount', 'error'); return }
+        const l = loans.find(l => l._fbId === activeLoanFbId || l.id === activeLoanFbId);
+        if (!l) return;
+        const bal = loanBalance(l);
+        if (amt > bal) { notify('Amount exceeds balance of ' + fmt(bal), 'error'); return }
+        const method = document.getElementById('pmMethod').value;
+        const note = document.getElementById('pmNote').value.trim();
+        const today = new Date().toISOString().slice(0, 10);
+        const newRepaid = (l.repaid || 0) + amt;
+        const newHistory = [...(l.history || []), { date: today, type: 'payment', amount: amt, method, note: note || method + ' payment' }];
+        try {
+            await updateDoc(doc(db, 'loans', activeLoanFbId), { repaid: newRepaid, history: newHistory });
+            const newBal = Math.max(0, loanTotal(l) - newRepaid);
+            closePayModal();
+            if (newBal === 0) notify('&#x1F389; Loan fully cleared for ' + l.borrower);
+            else notify(fmt(amt) + ' payment recorded. Balance: ' + fmt(newBal));
+        } catch (e) { notify('Save failed: ' + e.message, 'error'); }
+    }
+    window.confirmPayment = confirmPayment;
+
+    // ---- HISTORY MODAL ----
+    function openHistoryModal(fbId) {
+        const l = loans.find(l => l._fbId === fbId || l.id === fbId);
+        if (!l) return;
+        document.getElementById('histModalTitle').textContent = '&#x1F4CB; ' + l.borrower + ' — Loan History';
+        const total = loanTotal(l);
+        const repaid = l.repaid || 0;
+        const bal = loanBalance(l);
+        const pct = Math.min(100, Math.round((repaid / total) * 100));
+        const status = loanStatus(l);
+        const statusCls = status === 'Fully Paid' ? 'loan-status-paid' : status === 'Overdue' ? 'loan-status-overdue' : 'loan-status-active';
+        const hist = (l.history || []);
+        const payments = hist.filter(h => h.type === 'payment');
+        let trendHtml = '';
+        if (payments.length >= 2) {
+            const last = payments[payments.length - 1].amount;
+            const prev = payments[payments.length - 2].amount;
+            if (last > prev) trendHtml = `<span class="trend-up">&#x2191; Improving</span>`;
+            else if (last < prev) trendHtml = `<span class="trend-down">&#x2193; Declining</span>`;
+            else trendHtml = `<span class="trend-neutral">&#x2192; Steady</span>`;
+        }
+        document.getElementById('histModalContent').innerHTML = `
+    <div class="grid4 util-style-57">
+      <div class="kpi"><div class="kpi-label">Status</div><div class="kpi-val ${statusCls} util-style-102">${status}</div></div>
+      <div class="kpi"><div class="kpi-label">Principal</div><div class="kpi-val util-style-17">${fmt(l.principal)}</div></div>
+      <div class="kpi"><div class="kpi-label">Total Repayment</div><div class="kpi-val util-style-103">${fmt(total)}</div></div>
+      <div class="kpi"><div class="kpi-label">Balance</div><div class="kpi-val" style="font-size:16px;color:${bal > 0 ? 'var(--warn)' : 'var(--green)'}">${fmt(bal)}</div></div>
+    </div>
+    <div class="util-style-89 util-style-120">
+      <div class="util-style-9">${repaid >= total ? 'Fully repaid' : 'Repayment progress'}</div>
+      <div class="util-style-80"><div class="util-style-12">Payment Trend</div><div class="util-style-104">${trendHtml}</div></div>
+    </div>
+    <div class="util-style-105 util-style-120"><span>${fmt(repaid)} repaid</span><span>${fmt(bal)} left</span></div>
+    <div class="progress-bar util-style-57"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="card-title">Transaction History</div>
+    ${hist.length ? hist.slice().reverse().map(h => `
+      <div class="history-item">
+        <div class="history-item-row">
+          <div>
+            <span class="badge ${h.type === 'issued' ? 'badge-blue' : 'badge-green'} util-style-106">${h.type === 'issued' ? 'ISSUED' : 'PAYMENT'}</span>
+            <span class="util-style-107">${fmt(h.amount)}</span>
+          </div>
+          <div class="util-style-80">
+            <div class="util-style-75">${h.method || '—'}</div>
+            <div class="util-style-11">${h.date}</div>
+          </div>
+        </div>
+        ${h.note ? `<div class="util-style-52">${h.note}</div>` : ''}
+      </div>`).join('') : '<div class="empty-state">No history</div>'}`;
+        document.getElementById('historyModal').classList.add('open');
+    }
+    window.openHistoryModal = openHistoryModal;
+
+    function closeHistoryModal() { document.getElementById('historyModal').classList.remove('open') }
+    window.closeHistoryModal = closeHistoryModal;
+
+    // ---- DASHBOARD ----
+    function renderDashboard() {
+        const today = new Date().toISOString().slice(0, 10);
+        const todaySales = sales.filter(s => s.date === today);
+        const todayRevenue = todaySales.reduce((a, s) => a + s.amount, 0);
+        const todayProfit = todaySales.reduce((a, s) => a + s.profit, 0);
+        const niceDate = new Date().toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('todayDateLabel').textContent = niceDate;
+        document.getElementById('todayKpis').innerHTML = `
+    <div class="util-style-108">
+      <div class="util-style-109">Transactions</div>
+      <div class="util-style-110">${todaySales.length}</div>
+    </div>
+    <div class="util-style-108">
+      <div class="util-style-109">Revenue</div>
+      <div class="util-style-111">${fmt(todayRevenue)}</div>
+    </div>
+    <div class="util-style-108">
+      <div class="util-style-109">Profit</div>
+      <div style="font-size:22px;font-family:'Space Grotesk',sans-serif;font-weight:600;color:${todayProfit >= 0 ? 'var(--green)' : 'var(--danger)'}">${fmt(todayProfit)}</div>
+    </div>`;
+        document.getElementById('todayTransactions').innerHTML = todaySales.length ?
+            todaySales.map(s => `
+      <div class="util-style-112 util-style-120">
+        <div><div class="util-style-4">${s.buyer}</div><div class="util-style-113">${s.items}</div></div>
+        <div class="util-style-80"><div class="util-style-38">${fmt(s.amount)}</div><div class="util-style-113"><span class="badge badge-blue util-style-114">${s.payment}</span></div></div>
+      </div>`).join('') :
+            '<div class="util-style-115">No sales recorded today yet</div>';
+        const totalSales = sales.reduce((a, s) => a + s.amount, 0);
+        const totalProfit = sales.reduce((a, s) => a + s.profit, 0);
+        const inStock = inventory.filter(i => i.status === 'In Stock').length;
+        const activeLoans = loans.filter(l => loanStatus(l) !== 'Fully Paid');
+        const totalOutstanding = activeLoans.reduce((a, l) => a + loanBalance(l), 0);
+        const overdue = loans.filter(l => loanStatus(l) === 'Overdue').length;
+        document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi"><div class="kpi-label">All-Time Sales</div><div class="kpi-val kv-accent">${fmt(totalSales)}</div></div>
+    <div class="kpi"><div class="kpi-label">Total Profit</div><div class="kpi-val kv-blue">${fmt(totalProfit)}</div></div>
+    <div class="kpi"><div class="kpi-label">Items in Stock</div><div class="kpi-val">${inStock}</div></div>
+    <div class="kpi"><div class="kpi-label">Outstanding Loans</div><div class="kpi-val ${overdue ? 'kv-danger' : 'kv-warn'}">${fmt(totalOutstanding)}</div></div>`;
+        const totalLoaned = loans.reduce((a, l) => a + l.principal, 0);
+        document.getElementById('recentSales').innerHTML = sales.slice(0, 5).map(s => `
+    <div class="util-style-116 util-style-120">
+      <div><div>${s.buyer}</div><div class="util-style-74">${s.items}</div></div>
+      <div class="util-style-80"><div class="util-style-38">${fmt(s.amount)}</div><div class="util-style-11">${s.date}</div></div>
+    </div>`).join('') || '<div class="empty-state">No sales yet</div>';
+        document.getElementById('loanSummary').innerHTML = `
+    <div class="util-style-117 util-style-120">
+      <div class="util-style-118 util-style-120"><span class="util-style-15">Total Issued</span><span>${fmt(totalLoaned)}</span></div>
+      <div class="util-style-118 util-style-120"><span class="util-style-15">Outstanding</span><span class="util-style-37">${fmt(totalOutstanding)}</span></div>
+      <div class="util-style-118 util-style-120"><span class="util-style-15">Active Loans</span><span>${activeLoans.length}</span></div>
+      <div class="util-style-119 util-style-120"><span class="util-style-15">Overdue</span><span class="util-style-62">${overdue}</span></div>
+    </div>`;
+    }
+
+    function tick() {
+        const now = new Date();
+        const el = document.getElementById('clock');
+        if (el) el.textContent = now.toLocaleDateString('en-KE', { weekday: 'short', day: 'numeric', month: 'short' }) + ' · ' + now.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' });
+    }
+    tick(); setInterval(tick, 30000);
+
+    // Expose showTab globally
+    window.showTab = showTab;
+
+    // Boot
+    initData();
+</script>
